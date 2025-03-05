@@ -52,7 +52,7 @@ export const handleClerkWebhook = asyncHandler(
           const userData = evt.data;
           const email = userData.email_addresses?.[0]?.email_address;
           const firstName = userData.first_name;
-          const lastName = userData.last_name;
+          const lastName = userData.last_name || "";
           const clerkId = userData.id;
           const profileImage = userData.image_url;
 
@@ -67,18 +67,20 @@ export const handleClerkWebhook = asyncHandler(
               console.log(`User with email ${email} already exists.`);
               return null;
             }
+
+            const newUser = await db.insert(users).values({
+              clerkId,
+              email,
+              firstName,
+              lastName,
+              profileImage,
+              isOnboarded: false,
+            });
+
+            console.log("User created", newUser);
           } catch (error) {
             console.log(error);
           }
-
-          const newUser = await db.insert(users).values({
-            clerkId,
-            email,
-            firstName,
-            lastName,
-            profileImage,
-          });
-          console.log("User created", newUser);
           break;
 
         case "user.updated":

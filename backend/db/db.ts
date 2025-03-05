@@ -10,10 +10,10 @@ export const db = drizzle(pool, { schema });
 
 export const connectDB = async () => {
   try {
-    if (pool.connected) {
-      console.log("👍 Database already connected");
-      return db;
-    }
+    // if (pool.connected) {
+    //   console.log("👍 Database already connected");
+    //   return db;
+    // }
 
     await pool.connect();
     console.log("👍 Database connected successfully");
